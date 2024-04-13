@@ -6,7 +6,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-const ImageProduct = () => {
+
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+
+const ImageProduct = ({ setImagess }) => {
   const [file, setFile] = useState("");
   const [files, setFiles] = useState([]);
 
@@ -24,6 +33,10 @@ const ImageProduct = () => {
   const handleDelete = (index) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
+  useEffect(() => {
+    setImagess(files);
+    console.log("wtf2");
+  }, [files, setImagess]);
   return (
     <>
       <Grid container spacing={2}>
@@ -47,22 +60,37 @@ const ImageProduct = () => {
           </Button>
         </Grid>
         <Grid item xs={12} md={12}>
-          <table>
-            <thead>
-              <tr>
-                <th>Sise</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {files.map((file, index) => (
-                <tr key={index}>
-                  <td> <img width="100%" height="100%" src={file} /></td>
-                  <td><DeleteIcon onClick={() => handleDelete(index)}  style={{color:"red"}} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sise</TableCell>
+                  <TableCell>Delete</TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {files.map((file, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <img
+                        style={{ maxHeight: "50%", maxWidth: "50%" }}
+                        width="100%"
+                        height="100%"
+                        src={file}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <DeleteIcon
+                        onClick={() => handleDelete(index)}
+                        style={{ color: "red" }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
       </Grid>
     </>

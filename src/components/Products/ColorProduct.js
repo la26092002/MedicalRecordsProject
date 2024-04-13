@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 
 import CircleIcon from '@mui/icons-material/Circle';
@@ -6,7 +6,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-const ColorProduct = () => {
+
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+const ColorProduct = ({setColorss}) => {
   const [color, setColor] = useState("");
   const [colors, setColors] = useState([]);
   const handleAdd = () => {
@@ -21,6 +29,11 @@ const ColorProduct = () => {
     setColors((prevColors) => prevColors.filter((_, i) => i !== index));
   };
 
+  useEffect(() => {
+    setColorss(colors);
+    console.log("wtf")
+  }, [colors,setColorss])
+  
   return (
     <>
       <Grid container spacing={2}>
@@ -41,22 +54,24 @@ const ColorProduct = () => {
           </Button>
         </Grid>
         <Grid item xs={12} md={12}>
-          <table>
-            <thead>
-              <tr>
-                <th>Color</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
+        <TableContainer >
+        <Table  aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Color</TableCell>
+                <TableCell>Delete</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {colors.map((color, index) => (
-                <tr key={index}>
-                  <td><CircleIcon style={{color:color}} /></td>
-                  <td><DeleteIcon onClick={() => handleDelete(index)}  style={{color:"red"}} /></td>
-                </tr>
+                <TableRow key={index}>
+                  <TableCell><CircleIcon style={{color:color}} /></TableCell>
+                  <TableCell><DeleteIcon onClick={() => handleDelete(index)}  style={{color:"red"}} /></TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
+          </TableContainer>
         </Grid>
       </Grid>
     </>

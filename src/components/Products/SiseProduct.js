@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 
-import CircleIcon from '@mui/icons-material/Circle';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-const SiseProduct = () => {
+
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+const SiseProduct = ({ setSisess }) => {
   const [sise, setSise] = useState("");
   const [sises, setSises] = useState([]);
   const handleAdd = () => {
@@ -20,6 +27,11 @@ const SiseProduct = () => {
   const handleDelete = (index) => {
     setSises((prevSises) => prevSises.filter((_, i) => i !== index));
   };
+
+  useEffect(() => {
+    setSisess(sises);
+    console.log("wtf2");
+  }, [sises, setSisess]);
 
   return (
     <>
@@ -36,27 +48,39 @@ const SiseProduct = () => {
           />
         </Grid>
         <Grid item xs={4} md={4}>
-          <Button onClick={handleAdd} variant="text" style={{height:"100%"}} fullWidth>
+          <Button
+            onClick={handleAdd}
+            variant="text"
+            style={{ height: "100%" }}
+            fullWidth
+          >
             Add Sise
           </Button>
         </Grid>
         <Grid item xs={12} md={12}>
-          <table>
-            <thead>
-              <tr>
-                <th>Sise</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sises.map((sise, index) => (
-                <tr key={index}>
-                  <td>{sise}</td>
-                  <td><DeleteIcon onClick={() => handleDelete(index)}  style={{color:"red"}} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sise</TableCell>
+                  <TableCell>Delete</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sises.map((sise, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{sise}</TableCell>
+                    <TableCell>
+                      <DeleteIcon
+                        onClick={() => handleDelete(index)}
+                        style={{ color: "red" }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
       </Grid>
     </>
