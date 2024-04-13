@@ -1,7 +1,4 @@
 import React from "react";
-import SidebarDrawer from "./components/SidebarDrawer";
-import Navbar from "./components/Navbar";
-import About from "./components/About";
 import User from "./components/User";
 import Blogs from "./components/Blogs";
 import BlogsId from "./components/BlogsId";
@@ -10,12 +7,13 @@ import Login from "./components/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Error from "./components/Error";
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import { AddProduct } from "./components/Products/AddProduct";
+import MenuAppBar from "./components/MenuAppBar";
 
 export const App = () => {
   return (
     <React.Fragment>
-      <Navbar />
-      <SidebarDrawer />
+      <MenuAppBar />
       <Outlet />
     </React.Fragment>
   );
@@ -36,8 +34,8 @@ export const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "about",
-        element: <About />,
+        path: "product",
+        element: <AddProduct />,
       },
       {
         path: "user",
