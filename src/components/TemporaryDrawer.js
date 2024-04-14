@@ -11,6 +11,8 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import CategoryIcon from "@mui/icons-material/Category";
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import StoreIcon from '@mui/icons-material/Store';
 
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -40,18 +42,34 @@ export default function TemporaryDrawer({ status, setStatus }) {
         return null;
     }
   };
+  const getIconComponent2 = (index) => {
+    switch (index) {
+      case 0:
+        return <StoreIcon />;
+      case 1:
+        return <PointOfSaleIcon />;
+
+      default:
+        return null;
+    }
+  };
+  
+
 
   const clickComponent = (index) => {
     switch (index) {
       case 0:
-        navigate("/product");
+        navigate("product");
+        break;
       case 1:
-        navigate("/product");;
-
+        navigate("categories");
+        break;
       default:
-        navigate("/");;
+        navigate("/");
+        break;
     }
   };
+  
 
   
 
@@ -71,11 +89,11 @@ export default function TemporaryDrawer({ status, setStatus }) {
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        {["All Products", "All Commands", "Spam"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              {getIconComponent2(index)}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>

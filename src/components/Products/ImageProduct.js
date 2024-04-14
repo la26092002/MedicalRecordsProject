@@ -35,7 +35,6 @@ const ImageProduct = ({ setImagess }) => {
   };
   useEffect(() => {
     setImagess(files);
-    console.log("wtf2");
   }, [files, setImagess]);
   return (
     <>

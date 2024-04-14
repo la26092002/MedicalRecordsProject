@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 
-import CircleIcon from '@mui/icons-material/Circle';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CircleIcon from "@mui/icons-material/Circle";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -14,7 +14,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-const ColorProduct = ({setColorss}) => {
+const ColorProduct = ({ setColorss }) => {
   const [color, setColor] = useState("");
   const [colors, setColors] = useState([]);
   const handleAdd = () => {
@@ -31,9 +31,8 @@ const ColorProduct = ({setColorss}) => {
 
   useEffect(() => {
     setColorss(colors);
-    console.log("wtf")
-  }, [colors,setColorss])
-  
+  }, [colors, setColorss]);
+
   return (
     <>
       <Grid container spacing={2}>
@@ -49,28 +48,40 @@ const ColorProduct = ({setColorss}) => {
           />
         </Grid>
         <Grid item xs={4} md={4}>
-          <Button onClick={handleAdd} variant="text" style={{height:"100%"}} fullWidth>
+          <Button
+            onClick={handleAdd}
+            variant="text"
+            style={{ height: "100%" }}
+            fullWidth
+          >
             Add Color
           </Button>
         </Grid>
         <Grid item xs={12} md={12}>
-        <TableContainer >
-        <Table  aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Color</TableCell>
-                <TableCell>Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {colors.map((color, index) => (
-                <TableRow key={index}>
-                  <TableCell><CircleIcon style={{color:color}} /></TableCell>
-                  <TableCell><DeleteIcon onClick={() => handleDelete(index)}  style={{color:"red"}} /></TableCell>
+          <TableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Color</TableCell>
+                  <TableCell>Delete</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {colors.map((color, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <CircleIcon style={{ color: color }} />
+                    </TableCell>
+                    <TableCell>
+                      <DeleteIcon
+                        onClick={() => handleDelete(index)}
+                        style={{ color: "red" }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </TableContainer>
         </Grid>
       </Grid>

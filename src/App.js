@@ -9,6 +9,7 @@ import Error from "./components/Error";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AddProduct } from "./components/Products/AddProduct";
 import MenuAppBar from "./components/MenuAppBar";
+import Categories from "./components/Categories/Categories";
 
 export const App = () => {
   return (
@@ -36,6 +37,10 @@ export const appRouter = createBrowserRouter([
       {
         path: "product",
         element: <AddProduct />,
+      },
+      {
+        path: "categories",
+        element: <Categories />,
       },
       {
         path: "user",

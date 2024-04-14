@@ -30,7 +30,6 @@ const SiseProduct = ({ setSisess }) => {
 
   useEffect(() => {
     setSisess(sises);
-    console.log("wtf2");
   }, [sises, setSisess]);
 
   return (
