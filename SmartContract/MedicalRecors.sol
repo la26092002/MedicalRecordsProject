@@ -3,17 +3,20 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract MedicalRecors {
-    address public constant admin = 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2;
+    address public constant admin = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
 
     address[] public HospitalAccount;
     mapping(address => address[]) public DoctorAccount;
     address[] public DoctorsAddress;
 
     mapping(address => EHR[]) public Ehr; //address [patient];
+
+    
     struct EHR {
         address doctor;
         address hospitaAccount;
-        string data; //true or false
+        uint id; 
+        string data; 
     }
 
     function addHospitalAccount(address _user) external {
@@ -71,6 +74,7 @@ contract MedicalRecors {
                 EHR memory newEhr;
                 newEhr.doctor = msg.sender;
                 newEhr.hospitaAccount = _doctorHospitalAccount;
+                newEhr.id = Ehr[_patient].length;
                 newEhr.data = _data;
 
                 // Push the new EHR to the patient's EHR list
@@ -78,4 +82,31 @@ contract MedicalRecors {
             }
         }
     }
+
+ function concatenateStrings(string memory _a, string memory _b) public pure returns (string memory) {
+        bytes memory _ba = bytes(_a);
+        bytes memory _bb = bytes(_b);
+        string memory ab = new string(_ba.length + _bb.length);
+        bytes memory bab = bytes(ab);
+        uint k = 0;
+        for (uint i = 0; i < _ba.length; i++) bab[k++] = _ba[i];
+        for (uint j = 0; j < _bb.length; j++) bab[k++] = _bb[j];
+        return string(bab);
+    }
+
+function ModifyEhr(
+        address _patient,
+        uint _id,
+        string memory _data
+    ) external {
+        for (uint i=0; i < Ehr[_patient].length; i++) 
+        {
+            if (Ehr[_patient][i].id == _id) {
+                Ehr[_patient][i].data = concatenateStrings(Ehr[_patient][i].data,_data);
+            }
+             
+        }
+       
+    }
+
 }
