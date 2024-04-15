@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { AddCategory } from "../../Fetch";
 
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
+
 
 const Categories = () => {
+  const [name, setName] = useState("")
+  const handleClickAddCat = () =>{
+    AddCategory(name);
+  }
   return (
     <>
       <Grid container spacing={2} mt={3}>
@@ -20,11 +19,13 @@ const Categories = () => {
             id="outlined-basic"
             label="Name"
             variant="outlined"
+            onChange={(e)=> setName(e.target.value)}
+            value={name}
             fullWidth
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Button variant="outlined" style={{ height: "100%" }} fullWidth>
+          <Button onClick={handleClickAddCat} variant="outlined" style={{ height: "100%" }} fullWidth>
             Add Categorie
           </Button>
         </Grid>
