@@ -11,12 +11,13 @@ contract MedicalRecors {
 
     mapping(address => EHR[]) public Ehr; //address [patient];
 
-    
+    mapping(address => address[]) public AccesDoctor; //AccesDoctor[patient]=[doctor]
+    mapping(address => address[]) public AccesHospital; //AccesDoctor[patient]=[hospital]
     struct EHR {
         address doctor;
         address hospitaAccount;
-        uint id; 
-        string data; 
+        uint256 id;
+        string data;
     }
 
     function addHospitalAccount(address _user) external {
@@ -83,30 +84,58 @@ contract MedicalRecors {
         }
     }
 
- function concatenateStrings(string memory _a, string memory _b) public pure returns (string memory) {
+    function concatenateStrings(string memory _a, string memory _b)
+        public
+        pure
+        returns (string memory)
+    {
         bytes memory _ba = bytes(_a);
         bytes memory _bb = bytes(_b);
         string memory ab = new string(_ba.length + _bb.length);
         bytes memory bab = bytes(ab);
-        uint k = 0;
-        for (uint i = 0; i < _ba.length; i++) bab[k++] = _ba[i];
-        for (uint j = 0; j < _bb.length; j++) bab[k++] = _bb[j];
+        uint256 k = 0;
+        for (uint256 i = 0; i < _ba.length; i++) bab[k++] = _ba[i];
+        for (uint256 j = 0; j < _bb.length; j++) bab[k++] = _bb[j];
         return string(bab);
     }
 
-function ModifyEhr(
+    function ModifyEhr(
         address _patient,
-        uint _id,
+        uint256 _id,
         string memory _data
     ) external {
-        for (uint i=0; i < Ehr[_patient].length; i++) 
-        {
+        for (uint256 i = 0; i < Ehr[_patient].length; i++) {
             if (Ehr[_patient][i].id == _id) {
-                Ehr[_patient][i].data = concatenateStrings(Ehr[_patient][i].data,_data);
+                Ehr[_patient][i].data = concatenateStrings(
+                    Ehr[_patient][i].data,
+                    _data
+                );
             }
-             
         }
-       
     }
 
+    //AccesDoctor
+    function accessDoctor(address _doctor) external {
+        bool access = false;
+        for (uint256 i = 0; i < AccesDoctor[msg.sender].length; i++) {
+            if (AccesDoctor[msg.sender][i] == _doctor) {
+                access = true;
+            }
+        }
+        if (access == false) {
+            AccesDoctor[msg.sender].push(_doctor);
+        }
+    }
+
+    function accessHospital(address _hospital) external {
+        bool access = false;
+        for (uint256 i = 0; i < AccesHospital[msg.sender].length; i++) {
+            if (AccesDoctor[msg.sender][i] == _hospital) {
+                access = true;
+            }
+        }
+        if (access == false) {
+            AccesHospital[msg.sender].push(_hospital);
+        }
+    }
 }
