@@ -14,6 +14,12 @@ import CategoryIcon from "@mui/icons-material/Category";
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import StoreIcon from '@mui/icons-material/Store';
 
+import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import BusinessIcon from '@mui/icons-material/Business';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+
+import HomeIcon from '@mui/icons-material/Home';
+
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -34,7 +40,7 @@ export default function TemporaryDrawer({ status, setStatus }) {
   const getIconComponent = (index) => {
     switch (index) {
       case 0:
-        return <AddBusinessIcon />;
+        return <HomeIcon />;
       case 1:
         return <CategoryIcon />;
 
@@ -45,9 +51,11 @@ export default function TemporaryDrawer({ status, setStatus }) {
   const getIconComponent2 = (index) => {
     switch (index) {
       case 0:
-        return <StoreIcon />;
+        return <ContactEmergencyIcon />;
       case 1:
-        return <PointOfSaleIcon />;
+        return <SupervisedUserCircleIcon />;
+      case 2:
+        return <BusinessIcon />;
 
       default:
         return null;
@@ -69,6 +77,19 @@ export default function TemporaryDrawer({ status, setStatus }) {
         break;
     }
   };
+  const clickComponent2 = (index) => {
+    switch (index) {
+      case 0:
+        navigate("patientInfo");
+        break;
+      case 1:
+        navigate("DoctorAccess");
+        break;
+      default:
+        navigate("HospitalAccess");
+        break;
+    }
+  };
   
 
   
@@ -76,7 +97,7 @@ export default function TemporaryDrawer({ status, setStatus }) {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        {["Add Product", "Add Category", "Send email", "Drafts"].map(
+        {["Home", "Add Category", "Send email", "Drafts"].map(
           (text, index) => (
             <ListItem key={text} onClick={() => clickComponent(index)} disablePadding>
               <ListItemButton >
@@ -89,8 +110,8 @@ export default function TemporaryDrawer({ status, setStatus }) {
       </List>
       <Divider />
       <List>
-        {["All Products", "All Commands", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        {["Personel Informations", "Doctors Access", "Hospitals Access"].map((text, index) => (
+          <ListItem key={text} onClick={() => clickComponent2(index)} disablePadding>
             <ListItemButton>
               <ListItemIcon>
               {getIconComponent2(index)}

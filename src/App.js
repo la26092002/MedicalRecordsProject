@@ -10,6 +10,9 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AddProduct } from "./components/Products/AddProduct";
 import MenuAppBar from "./components/MenuAppBar";
 import Categories from "./components/Categories/Categories";
+import { PatientInfo } from "./components/Patient/PatientInfo";
+import AccesDoctor from "./components/Patient/AccesDoctor";
+import AccessHospital from "./components/Patient/AccessHospital";
 
 export const App = () => {
   return (
@@ -35,8 +38,16 @@ export const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "product",
-        element: <AddProduct />,
+        path: "patientInfo",
+        element: <PatientInfo />,
+      },
+      {
+        path: "DoctorAccess",
+        element: <AccesDoctor />,
+      },
+      {
+        path: "HospitalAccess",
+        element: <AccessHospital />,
       },
       {
         path: "categories",
