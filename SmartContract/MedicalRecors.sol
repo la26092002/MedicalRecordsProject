@@ -3,7 +3,9 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract MedicalRecors {
-    address public constant admin = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
+    address public constant admin = 0xcC1C39bCb067F7b942b7D6917d3Ba0C07B6c5d75;
+
+    mapping(address => string[]) public PersonalInfos;
 
     address[] public HospitalAccount;
     mapping(address => address[]) public DoctorAccount;
@@ -65,16 +67,30 @@ contract MedicalRecors {
 
     function createEhr(
         address _patient,
-        address _doctorHospitalAccount,
+        address _HospitalAccount,
         string memory _data
     ) external {
+        //AccesDoctor[patient]=[doctor]
+        bool acce = false;
+        for (uint256 i = 0; i < AccesDoctor[_patient].length; i++) {
+            if (AccesDoctor[_patient][i] == msg.sender) {
+                acce = true;
+            }
+        }
+        for (uint256 i = 0; i < AccesHospital[_patient].length; i++) {
+            if (AccesHospital[_patient][i] == msg.sender) {
+                acce = true;
+            }
+        }
+        require(acce == true, "you dont have acces");
+
         for (uint256 j = 0; j < DoctorsAddress.length; j++) {
             // DoctorAccount
             if (DoctorsAddress[j] == msg.sender) {
                 // Create a new EHR instance
                 EHR memory newEhr;
                 newEhr.doctor = msg.sender;
-                newEhr.hospitaAccount = _doctorHospitalAccount;
+                newEhr.hospitaAccount = _HospitalAccount;
                 newEhr.id = Ehr[_patient].length;
                 newEhr.data = _data;
 
@@ -104,6 +120,19 @@ contract MedicalRecors {
         uint256 _id,
         string memory _data
     ) external {
+        bool acce = false;
+        for (uint256 i = 0; i < AccesDoctor[_patient].length; i++) {
+            if (AccesDoctor[_patient][i] == msg.sender) {
+                acce = true;
+            }
+        }
+        for (uint256 i = 0; i < AccesHospital[_patient].length; i++) {
+            if (AccesHospital[_patient][i] == msg.sender) {
+                acce = true;
+            }
+        }
+        require(acce == true, "you dont have acces");
+
         for (uint256 i = 0; i < Ehr[_patient].length; i++) {
             if (Ehr[_patient][i].id == _id) {
                 Ehr[_patient][i].data = concatenateStrings(
@@ -127,6 +156,10 @@ contract MedicalRecors {
         }
     }
 
+    function displayaccessDoctorLength() external view returns(uint ){
+      return AccesDoctor[msg.sender].length;
+  }
+
     function accessHospital(address _hospital) external {
         bool access = false;
         for (uint256 i = 0; i < AccesHospital[msg.sender].length; i++) {
@@ -138,4 +171,27 @@ contract MedicalRecors {
             AccesHospital[msg.sender].push(_hospital);
         }
     }
+     function displayaccessHospitalLength() external view returns(uint ){
+      return AccesHospital[msg.sender].length;
+  }
+
+
+//Add personal infos
+    function addPersonalInfos(string memory  _data) external {
+        PersonalInfos[msg.sender].push(_data);
+    }
+
+    function displayPersonalInfos() external view returns(string memory){
+      return PersonalInfos[msg.sender][PersonalInfos[msg.sender].length - 1];
+  }
 }
+
+
+
+
+
+
+
+
+
+//0xB25f1f0B4653b4e104f7Fbd64Ff183e23CdBa582
