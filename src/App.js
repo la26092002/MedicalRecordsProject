@@ -7,18 +7,19 @@ import Login from "./components/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Error from "./components/Error";
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import { AddProduct } from "./components/Products/AddProduct";
 import MenuAppBar from "./components/MenuAppBar";
-import Categories from "./components/Categories/Categories";
 import { PatientInfo } from "./components/Patient/PatientInfo";
 import AccesDoctor from "./components/Patient/AccesDoctor";
 import AccessHospital from "./components/Patient/AccessHospital";
+import { AppProvider } from "./AppContext";
 
 export const App = () => {
   return (
     <React.Fragment>
+      <AppProvider>
       <MenuAppBar />
       <Outlet />
+      </AppProvider>
     </React.Fragment>
   );
 };
@@ -48,10 +49,6 @@ export const appRouter = createBrowserRouter([
       {
         path: "HospitalAccess",
         element: <AccessHospital />,
-      },
-      {
-        path: "categories",
-        element: <Categories />,
       },
       {
         path: "user",

@@ -1,6 +1,6 @@
 export const jsonPlaceholderData = "https://jsonplaceholder.typicode.com/users";
 export const URL = "http://localhost:3001";
-export const ContractAddress = "0x2116C43Fd24Df71B0d07cbAA4F213Cffa29F4424";
+export const ContractAddress = "0x64E0c4801B66491DF7DD6274Ea42f0252DF06998";
 export const ABI = [
   {
     inputs: [
@@ -314,6 +314,54 @@ export const ABI = [
         internalType: "string",
         name: "data",
         type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_patient",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_index",
+        type: "uint256",
+      },
+    ],
+    name: "getAccesDoctorAtIndex",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_patient",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_index",
+        type: "uint256",
+      },
+    ],
+    name: "getAccesHospitalAtIndex",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",
