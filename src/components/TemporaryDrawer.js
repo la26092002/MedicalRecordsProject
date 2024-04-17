@@ -19,6 +19,9 @@ import BusinessIcon from '@mui/icons-material/Business';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
 import HomeIcon from '@mui/icons-material/Home';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import FolderIcon from '@mui/icons-material/Folder';
+import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
 
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -42,7 +45,11 @@ export default function TemporaryDrawer({ status, setStatus }) {
       case 0:
         return <HomeIcon />;
       case 1:
-        return <CategoryIcon />;
+        return <CreateNewFolderIcon />;
+      case 2:
+        return <FolderIcon />;
+      case 3:
+        return <DriveFolderUploadRoundedIcon />;
 
       default:
         return null;
@@ -67,9 +74,15 @@ export default function TemporaryDrawer({ status, setStatus }) {
   const clickComponent = (index) => {
     switch (index) {
       case 0:
-        navigate("product");
+        navigate("");
         break;
       case 1:
+        navigate("categories");
+        break;
+      case 2:
+        navigate("categories");
+        break;
+      case 3:
         navigate("categories");
         break;
       default:
@@ -97,7 +110,7 @@ export default function TemporaryDrawer({ status, setStatus }) {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        {["Home", "Add Category", "Send email", "Drafts"].map(
+        {["Home", "Create EHR", "Access EHR", "Upload EHR"].map(
           (text, index) => (
             <ListItem key={text} onClick={() => clickComponent(index)} disablePadding>
               <ListItemButton >

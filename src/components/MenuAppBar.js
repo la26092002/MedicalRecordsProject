@@ -47,7 +47,7 @@ export default function MenuAppBar() {
             <MenuIcon  />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Ecommerce Dash
+            EHR DAPP
           </Typography>
             <div>
               <IconButton
