@@ -68,6 +68,18 @@ export default function TemporaryDrawer({ status, setStatus }) {
         return null;
     }
   };
+
+  const getIconComponent3 = (index) => {
+    switch (index) {
+      case 0:
+        return <SupervisedUserCircleIcon />;
+      case 1:
+        return <BusinessIcon />;
+
+      default:
+        return null;
+    }
+  };
   
 
 
@@ -103,6 +115,20 @@ export default function TemporaryDrawer({ status, setStatus }) {
         break;
     }
   };
+
+  const clickComponent3 = (index) => {
+    switch (index) {
+      case 0:
+        navigate("AddDoctor");
+        break;
+      case 1:
+        navigate("AddHospital");
+        break;
+      default:
+        navigate("HospitalAccess");
+        break;
+    }
+  };
   
 
   
@@ -123,6 +149,19 @@ export default function TemporaryDrawer({ status, setStatus }) {
       </List>
       <Divider />
       <List>
+        {[ "Add Doctors","Add Hospitals"].map((text, index) => (
+          <ListItem key={text} onClick={() => clickComponent3(index)} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+              {getIconComponent3(index)}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
         {["Personel Informations", "Doctors Access", "Hospitals Access"].map((text, index) => (
           <ListItem key={text} onClick={() => clickComponent2(index)} disablePadding>
             <ListItemButton>
@@ -134,6 +173,7 @@ export default function TemporaryDrawer({ status, setStatus }) {
           </ListItem>
         ))}
       </List>
+      
     </Box>
   );
 

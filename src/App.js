@@ -12,13 +12,15 @@ import { PatientInfo } from "./components/Patient/PatientInfo";
 import AccesDoctor from "./components/Patient/AccesDoctor";
 import AccessHospital from "./components/Patient/AccessHospital";
 import { AppProvider } from "./AppContext";
+import { AddHospital } from "./components/Admin/AddHospital";
+import AddDoctor from "./components/Hospital/AddDoctor";
 
 export const App = () => {
   return (
     <React.Fragment>
       <AppProvider>
-      <MenuAppBar />
-      <Outlet />
+        <MenuAppBar />
+        <Outlet />
       </AppProvider>
     </React.Fragment>
   );
@@ -49,6 +51,14 @@ export const appRouter = createBrowserRouter([
       {
         path: "HospitalAccess",
         element: <AccessHospital />,
+      },
+      {
+        path: "AddHospital",
+        element: <AddHospital />,
+      },
+      {
+        path: "AddDoctor",
+        element: <AddDoctor />,
       },
       {
         path: "user",

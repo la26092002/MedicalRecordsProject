@@ -5,6 +5,8 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { useAppContext } from "../../AppContext";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
@@ -15,13 +17,15 @@ import TableBody from "@mui/material/TableBody";
 const AccessHospital = () => {
   const [Hospitals, setHospitals] = React.useState([]);
 
+  const [circularProgress, setCircularProgress] = React.useState(false);
+
   const [addresse, setAddresse] = React.useState("");
   const { account, contract, provider } = useAppContext();
-
 
   useEffect(() => {
     const display = async () => {
       if (contract) {
+        setCircularProgress(true);
         setHospitals([]);
         const length = await contract.displayaccessHospitalLength();
         let doctorsData = []; // Array to collect all the data
@@ -31,6 +35,7 @@ const AccessHospital = () => {
         }
         setHospitals((prevDoctors) => [...prevDoctors, ...doctorsData]);
         doctorsData = [];
+        setCircularProgress(false);
       }
     };
     display();
@@ -72,22 +77,30 @@ const AccessHospital = () => {
           </Button>
         </Grid>
         <Grid item xs={12} md={6} mt={3}>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Addresse</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Hospitals.map((hospital, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{hospital}</TableCell>
+          {circularProgress && (
+            <center>
+              <CircularProgress />
+            </center>
+          )}
+
+          {Hospitals.length > 0 && !circularProgress && (
+            <TableContainer>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Addresse</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {Hospitals.map((hospital, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{hospital}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </Grid>
       </Grid>
     </>
