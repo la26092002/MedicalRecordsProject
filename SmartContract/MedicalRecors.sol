@@ -11,7 +11,7 @@ contract MedicalRecors {
     mapping(address => address[]) public DoctorAccount;
     address[] public DoctorsAddress;
 
-    mapping(address => EHR[]) public Ehr; //address [patient];
+    mapping(address => string[]) public Ehr; //address [patient];
 
     mapping(address => address[]) public AccesDoctor; //AccesDoctor[patient]=[doctor]
     mapping(address => address[]) public AccesHospital; //AccesDoctor[patient]=[hospital]
@@ -37,6 +37,22 @@ contract MedicalRecors {
         require(!exist, "This Account is Added");
         HospitalAccount.push(_user);
     }
+
+    //
+    function displayHospitalAccountLength() external view returns (uint256) {
+        return HospitalAccount.length;
+    }
+
+    function displayHospitalAccount(uint256 _id)
+        external
+        view
+        returns (address)
+    {
+        require(_id < HospitalAccount.length, "Index out of bounds");
+        return HospitalAccount[_id];
+    }
+
+    //
 
     function addDoctorAccount(address _user) external {
         bool ExistHospitalAccount = false;
@@ -65,9 +81,19 @@ contract MedicalRecors {
         DoctorsAddress.push(_user);
     }
 
+    function displayDoctorAccountLength() external view returns (uint256) {
+        return DoctorAccount[msg.sender].length;
+    }
+
+    function displayDoctorAccount(uint256 _id) external view returns (address) {
+        require(_id < DoctorAccount[msg.sender].length, "Index out of bounds");
+        return DoctorAccount[msg.sender][_id];
+    }
+
+    //
+
     function createEhr(
         address _patient,
-        address _HospitalAccount,
         string memory _data
     ) external {
         //AccesDoctor[patient]=[doctor]
@@ -88,14 +114,9 @@ contract MedicalRecors {
             // DoctorAccount
             if (DoctorsAddress[j] == msg.sender) {
                 // Create a new EHR instance
-                EHR memory newEhr;
-                newEhr.doctor = msg.sender;
-                newEhr.hospitaAccount = _HospitalAccount;
-                newEhr.id = Ehr[_patient].length;
-                newEhr.data = _data;
 
                 // Push the new EHR to the patient's EHR list
-                Ehr[_patient].push(newEhr);
+                Ehr[_patient].push(_data);
             }
         }
     }
@@ -133,14 +154,7 @@ contract MedicalRecors {
         }
         require(acce == true, "you dont have acces");
 
-        for (uint256 i = 0; i < Ehr[_patient].length; i++) {
-            if (Ehr[_patient][i].id == _id) {
-                Ehr[_patient][i].data = concatenateStrings(
-                    Ehr[_patient][i].data,
-                    _data
-                );
-            }
-        }
+        Ehr[_patient][_id] = concatenateStrings(Ehr[_patient][_id], _data);
     }
 
     function displayMedicalRecordsLength(address _patient)
@@ -154,7 +168,7 @@ contract MedicalRecors {
     function displayMedicalRecords(address _patient, uint256 _id)
         external
         view
-        returns (EHR memory)
+        returns (string memory)
     {
         require(_id < Ehr[_patient].length, "Index out of bounds");
         return Ehr[_patient][_id];
@@ -207,7 +221,7 @@ contract MedicalRecors {
         view
         returns (address)
     {
-        require(_index < AccesDoctor[_patient].length, "Index out of bounds");
+        require(_index < AccesHospital[_patient].length, "Index out of bounds");
         return AccesHospital[_patient][_index];
     }
 
@@ -217,6 +231,18 @@ contract MedicalRecors {
     }
 
     function displayPersonalInfos() external view returns (string memory) {
+        require(
+            PersonalInfos[msg.sender].length > 0,
+            "No personal information found"
+        );
         return PersonalInfos[msg.sender][PersonalInfos[msg.sender].length - 1];
+    }
+
+    function displayPersonalInfosLength(address _user)
+        external
+        view
+        returns (uint256)
+    {
+        return PersonalInfos[_user].length;
     }
 }
