@@ -143,6 +143,23 @@ contract MedicalRecors {
         }
     }
 
+    function displayMedicalRecordsLength(address _patient)
+        external
+        view
+        returns (uint256)
+    {
+        return Ehr[_patient].length;
+    }
+
+    function displayMedicalRecords(address _patient, uint256 _id)
+        external
+        view
+        returns (EHR memory)
+    {
+        require(_id < Ehr[_patient].length, "Index out of bounds");
+        return Ehr[_patient][_id];
+    }
+
     //AccesDoctor
     function accessDoctor(address _doctor) external {
         bool access = false;
@@ -156,9 +173,18 @@ contract MedicalRecors {
         }
     }
 
-    function displayaccessDoctorLength() external view returns(uint ){
-      return AccesDoctor[msg.sender].length;
-  }
+    function displayaccessDoctorLength() external view returns (uint256) {
+        return AccesDoctor[msg.sender].length;
+    }
+
+    function getAccesDoctorAtIndex(address _patient, uint256 _index)
+        external
+        view
+        returns (address)
+    {
+        require(_index < AccesDoctor[_patient].length, "Index out of bounds");
+        return AccesDoctor[_patient][_index];
+    }
 
     function accessHospital(address _hospital) external {
         bool access = false;
@@ -171,27 +197,26 @@ contract MedicalRecors {
             AccesHospital[msg.sender].push(_hospital);
         }
     }
-     function displayaccessHospitalLength() external view returns(uint ){
-      return AccesHospital[msg.sender].length;
-  }
 
+    function displayaccessHospitalLength() external view returns (uint256) {
+        return AccesHospital[msg.sender].length;
+    }
 
-//Add personal infos
-    function addPersonalInfos(string memory  _data) external {
+    function getAccesHospitalAtIndex(address _patient, uint256 _index)
+        external
+        view
+        returns (address)
+    {
+        require(_index < AccesDoctor[_patient].length, "Index out of bounds");
+        return AccesHospital[_patient][_index];
+    }
+
+    //Add personal infos
+    function addPersonalInfos(string memory _data) external {
         PersonalInfos[msg.sender].push(_data);
     }
 
-    function displayPersonalInfos() external view returns(string memory){
-      return PersonalInfos[msg.sender][PersonalInfos[msg.sender].length - 1];
-  }
+    function displayPersonalInfos() external view returns (string memory) {
+        return PersonalInfos[msg.sender][PersonalInfos[msg.sender].length - 1];
+    }
 }
-
-
-
-
-
-
-
-
-
-//0xB25f1f0B4653b4e104f7Fbd64Ff183e23CdBa582
