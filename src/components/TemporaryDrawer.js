@@ -63,6 +63,8 @@ export default function TemporaryDrawer({ status, setStatus }) {
         return <SupervisedUserCircleIcon />;
       case 2:
         return <BusinessIcon />;
+      case 3:
+        return <BusinessIcon />;
 
       default:
         return null;
@@ -109,6 +111,12 @@ export default function TemporaryDrawer({ status, setStatus }) {
         break;
       case 1:
         navigate("DoctorAccess");
+        break;
+      case 2:
+        navigate("HospitalAccess");
+        break;
+      case 3:
+        navigate("UploadEHR");
         break;
       default:
         navigate("HospitalAccess");
@@ -162,7 +170,7 @@ export default function TemporaryDrawer({ status, setStatus }) {
       </List>
       <Divider />
       <List>
-        {["Personel Informations", "Doctors Access", "Hospitals Access"].map((text, index) => (
+        {["Personel Informations", "Doctors Access", "Hospitals Access", "Upload EHR"].map((text, index) => (
           <ListItem key={text} onClick={() => clickComponent2(index)} disablePadding>
             <ListItemButton>
               <ListItemIcon>

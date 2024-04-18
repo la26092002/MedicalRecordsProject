@@ -9,7 +9,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import { useAppContext } from "../../AppContext";
 const CreateEhr = () => {
-    const { account, contract, provider } = useAppContext();
+  const { account, contract, provider } = useAppContext();
 
   const [patientAddress, setPatientAddress] = useState("");
   const [medicalHistory, setMedicalHistory] = useState("");
@@ -26,7 +26,7 @@ const CreateEhr = () => {
 
   return (
     <>
-    <h1>Create EHR</h1>
+      <h1>Create EHR</h1>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} mt={3}>
           <TextField
@@ -115,12 +115,15 @@ const CreateEhr = () => {
         <Grid item xs={12} md={6} mt={3} mb={3}>
           <Button
             onClick={async () => {
-                if (!ReasonVisit || !patientAddress ) {
-                    alert("Please fill out all fields.");
-                    return;
-                  }
+              if (!ReasonVisit || !patientAddress) {
+                alert("Please fill out all fields.");
+                return;
+              }
 
               let data = {
+                id:"1",
+                doctor:"",
+                hospitaAccount:"",
                 medicalHistory,
                 CurrentMedications,
                 ReasonVisit,
@@ -128,18 +131,16 @@ const CreateEhr = () => {
                 AssessmentPlan,
                 labResult,
               };
-              let object = {
-                doctor: account,
-                data: {data},
-              }
-              console.log(JSON.stringify(object)+",")
-              contract.createEhr(patientAddress,account,JSON.stringify(object)+",")
+              console.log(JSON.stringify(data) + ",");
+              contract.createEhr(
+                JSON.stringify(data) 
+              );
             }}
             variant="outlined"
             style={{ height: "100%" }}
             fullWidth
           >
-            Update Your Informations
+            Create EHR
           </Button>
         </Grid>
       </Grid>

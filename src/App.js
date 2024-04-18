@@ -15,6 +15,7 @@ import { AppProvider } from "./AppContext";
 import { AddHospital } from "./components/Admin/AddHospital";
 import { AddDoctor } from "./components/Hospital/AddDoctor";
 import CreateEhr from "./components/EHR/CreateEhr";
+import UploadEHR from "./components/Patient/UploadEHR";
 
 
 export const App = () => {
@@ -65,6 +66,10 @@ export const appRouter = createBrowserRouter([
       {
         path: "CreateEhr",
         element: <CreateEhr />,
+      },
+      {
+        path: "UploadEHR",
+        element: <UploadEHR />,
       },
       {
         path: "user",

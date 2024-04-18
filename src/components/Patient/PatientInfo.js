@@ -11,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { ABI, ContractAddress } from "../../constants/Constants";
+import { useAppContext } from "../../AppContext";
 
 export const PatientInfo = () => {
   const [name, setName] = React.useState("");
@@ -22,68 +23,30 @@ export const PatientInfo = () => {
 
   //Update InfosPersonal
   const [updateInfos, setUpdateInfos] = React.useState(false);
+  const [isData, setIsData] = React.useState(false);
   //
-  const [networkChanged, setNetworkChanged] = useState(false);
-  const [accountChanged, setAccountChanged] = useState(false);
+
 
   const [infosPersonal, setInfosPersonal] = useState({});
 
-  useEffect(() => {
-    if (networkChanged) {
-      setNetworkChanged(false);
-    } else if (accountChanged) {
-      setAccountChanged(false);
-    }
-  }, [networkChanged, accountChanged]);
-
-  //0x5DC29e716f61982B9D86A309E05b6BF0B2fB0Eb2
-  const [account, setAccount] = useState("");
-  const [contract, setContract] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //connect to our metamask
-
-    const loadProvider = async () => {
-      if (provider) {
-        window.ethereum.on("chainChanged", () => {
-          setNetworkChanged(true);
-        });
-        window.ethereum.on("accountsChanged", () => {
-          setAccountChanged(true);
-        });
-
-        await provider.send("eth_requestAccounts", []); //open your metamask
-        const signer = provider.getSigner(); //signer is for change in smart contract
-        const address = await signer.getAddress();
-        //console.log(address)
-        setAccount(address);
-        let contractAddress = ContractAddress;
-        let contractAbi = ABI;
-
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractAbi,
-          signer
-        ); //create instance of our smart contract
-        console.log(contract);
-        setContract(contract);
-        setProvider(provider);
-      } else {
-        console.error("Metamask is not installed");
-      }
-    };
-    provider && loadProvider();
-  }, [networkChanged, accountChanged]);
+  const { account, contract, provider } = useAppContext();
 
   useEffect(() => {
     const loadContract = async () => {
-      if (contract) {
+      if (!contract) {
+        console.error("Contract is not initialized");
+        return;
+      }
+  
+      let length = await contract.displayPersonalInfosLength(account);
+      setIsData(false);
+      if (parseInt(length._hex, 16) > 0) {
+        setIsData(true);
         let data = await contract.displayPersonalInfos();
-        let ddt = await JSON.parse(data);
+        let ddt = JSON.parse(data);
         setInfosPersonal(ddt);
+
+        console.log("yes")
       }
     };
 
@@ -94,7 +57,10 @@ export const PatientInfo = () => {
     <>
       <h1>Infos</h1>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6} mt={1}>
+        {
+          isData && (
+            <>
+            <Grid item xs={12} md={6} mt={1}>
           <h3>Name: {infosPersonal.name}</h3>
           <h3>Date of Birth:{infosPersonal.datebirth}</h3>
           <h3>Gender:{infosPersonal.gender}</h3>
@@ -104,6 +70,9 @@ export const PatientInfo = () => {
           <h3>Phone Number:{infosPersonal.phonenumber}</h3>
           <h3>Emergency Contact:{infosPersonal.emergencycontact}</h3>
         </Grid>
+        </>
+          )
+        }
         <Grid item xs={12} md={6} mt={1}>
           <Button
             onClick={async () => {
@@ -116,6 +85,8 @@ export const PatientInfo = () => {
             Update Your Informations
           </Button>
         </Grid>
+        
+        
       </Grid>
       {updateInfos && (
         <>
