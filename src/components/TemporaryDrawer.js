@@ -89,7 +89,7 @@ export default function TemporaryDrawer({ status, setStatus }) {
         navigate("");
         break;
       case 1:
-        navigate("categories");
+        navigate("CreateEhr");
         break;
       case 2:
         navigate("categories");

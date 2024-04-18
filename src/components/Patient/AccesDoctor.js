@@ -30,11 +30,14 @@ const AccesDoctor = () => {
         setDoctors([]);
         const length = await contract.displayaccessDoctorLength();
         let doctorsData = []; // Array to collect all the data
-        for (let i = 0; i < parseInt(length._hex, 16); i++) {
-          let data = await contract.getAccesDoctorAtIndex(account, i);
-          doctorsData.push(data); // Push data into the array
+        if (parseInt(length._hex, 16) >0) {
+          for (let i = 0; i < parseInt(length._hex, 16); i++) {
+            let data = await contract.getAccesDoctorAtIndex(account, i);
+            doctorsData.push(data); // Push data into the array
+          }
+          setDoctors((prevDoctors) => [...prevDoctors, ...doctorsData]);
         }
-        setDoctors((prevDoctors) => [...prevDoctors, ...doctorsData]);
+        
         doctorsData = [];
         setCircularProgress(false);
       }

@@ -29,11 +29,13 @@ const AccessHospital = () => {
         setHospitals([]);
         const length = await contract.displayaccessHospitalLength();
         let doctorsData = []; // Array to collect all the data
+        if(parseInt(length._hex, 16) > 0){
         for (let i = 0; i < parseInt(length._hex, 16); i++) {
           let data = await contract.getAccesHospitalAtIndex(account, i);
           doctorsData.push(data); // Push data into the array
         }
         setHospitals((prevDoctors) => [...prevDoctors, ...doctorsData]);
+      }
         doctorsData = [];
         setCircularProgress(false);
       }
