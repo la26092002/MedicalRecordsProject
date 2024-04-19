@@ -4,6 +4,9 @@ import { useAppContext } from "../../AppContext";
 
 import Grid from "@mui/material/Grid";
 
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
@@ -11,14 +14,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import { Button } from "@mui/material";
 
 const DetailsComponent = () => {
   // Access the ID from URL params
   let { id, addresse } = useParams();
   const [data, setdata] = useState([]);
 
-  const { contract } = useAppContext();
+  const { account, contract, provider } = useAppContext();
   useEffect(() => {
     const loadContract = async () => {
       if (!contract) {
@@ -26,6 +28,7 @@ const DetailsComponent = () => {
         return;
       }
       let record = await contract.displayMedicalRecords(addresse, id);
+      //console.log(record)
       setdata(JSON.parse(record) || []);
       //console.log(JSON.parse(record))
     };
@@ -37,21 +40,151 @@ const DetailsComponent = () => {
     console.log("ggg");
   }, [data]);
 
+  const [medicalHistory, setMedicalHistory] = useState("");
+  const [CurrentMedications, setCurrentMedications] = useState("");
+  const [ReasonVisit, setReasonVisit] = useState("");
+  const [PhysicalExamination, setPhysicalExamination] = useState("");
+  const [AssessmentPlan, setAssessmentPlan] = useState("");
+  const [labResult, setLabResult] = useState("");
+
+  const [addstate, setAddstate] = useState(false);
+
   return (
     <div>
+      <Grid container spacing={2}></Grid>
       <h2>
         Details of Record with ID: {id} of {addresse}
       </h2>
       <Grid container spacing={2}>
-      <Grid item xs={12} md={6} mt={3}>
-      <Button
+        <Grid item xs={12} md={12} mt={3}>
+          <Button
+            onClick={() => {
+              setAddstate(!addstate);
+            }}
             variant="outlined"
             style={{ height: "100%" }}
             fullWidth
           >
             Add New Informations
           </Button>
-      </Grid>
+        </Grid>
+
+        {addstate && (
+          <>
+            <Grid item xs={12} md={6} mt={3}>
+              <TextField
+                id="outlined-basic"
+                label="Medical History"
+                value={medicalHistory}
+                onChange={(e) => {
+                  setMedicalHistory(e.target.value);
+                }}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6} mt={3}>
+              <TextField
+                id="outlined-basic"
+                label="Current Medications"
+                value={CurrentMedications}
+                onChange={(e) => {
+                  setCurrentMedications(e.target.value);
+                }}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6} mt={3}>
+              <TextField
+                id="outlined-basic"
+                label="Reason for Visit"
+                value={ReasonVisit}
+                onChange={(e) => {
+                  setReasonVisit(e.target.value);
+                }}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6} mt={3}>
+              <TextField
+                id="outlined-basic"
+                label="PhysicalExamination"
+                value={PhysicalExamination}
+                onChange={(e) => {
+                  setPhysicalExamination(e.target.value);
+                }}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6} mt={3}>
+              <TextField
+                id="outlined-basic"
+                label="Assessment and Plan"
+                value={AssessmentPlan}
+                onChange={(e) => {
+                  setAssessmentPlan(e.target.value);
+                }}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6} mt={3}>
+              <TextField
+                id="outlined-basic"
+                label="Lab Results"
+                value={labResult}
+                onChange={(e) => {
+                  setLabResult(e.target.value);
+                }}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6} mt={3} mb={3}>
+              <Button
+                onClick={async () => {
+                  if (!ReasonVisit) {
+                    alert("Please fill out all fields.");
+                    return;
+                  }
+                  const loadContract = async () => {
+                    if (!contract) {
+                      console.error("Contract is not initialized");
+                      return;
+                    }
+                    let record = await contract.displayMedicalRecords(
+                      addresse,
+                      id
+                    );
+                    let rr = JSON.parse(record);
+                    let data = {
+                      doctor: account,
+                      hospitaAccount: "",
+                      medicalHistory,
+                      CurrentMedications,
+                      ReasonVisit,
+                      PhysicalExamination,
+                      AssessmentPlan,
+                      labResult,
+                    };
+                    rr.push(data);
+                    await contract.ModifyEhr(addresse, id, JSON.stringify(rr));
+                  };
+                  loadContract();
+                }}
+                variant="outlined"
+                style={{ height: "100%" }}
+                fullWidth
+              >
+                Create EHR
+              </Button>
+            </Grid>
+          </>
+        )}
+
         <Grid item xs={12} md={12} mt={3}>
           <TableContainer>
             <Table aria-label="simple table">
@@ -85,7 +218,6 @@ const DetailsComponent = () => {
             </Table>
           </TableContainer>
         </Grid>
-        
       </Grid>
     </div>
   );
