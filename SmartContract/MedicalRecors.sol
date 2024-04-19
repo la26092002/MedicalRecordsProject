@@ -154,7 +154,7 @@ contract MedicalRecors {
         }
         require(acce == true, "you dont have acces");
 
-        Ehr[_patient][_id] = concatenateStrings(Ehr[_patient][_id], _data);
+        Ehr[_patient][_id] = _data;
     }
 
     function displayMedicalRecordsLength(address _patient)
@@ -170,7 +170,7 @@ contract MedicalRecors {
         view
         returns (string memory)
     {
-        require(_id < Ehr[_patient].length, "Index out of bounds");
+        require(_id < Ehr[_patient].length, "Index out of bounds");//???
         return Ehr[_patient][_id];
     }
 
@@ -189,6 +189,10 @@ contract MedicalRecors {
 
     function displayaccessDoctorLength() external view returns (uint256) {
         return AccesDoctor[msg.sender].length;
+    }
+
+    function displayaccessDoctorLengthPatient(address _patient) external view returns (uint256) {
+        return AccesDoctor[_patient].length;
     }
 
     function getAccesDoctorAtIndex(address _patient, uint256 _index)
