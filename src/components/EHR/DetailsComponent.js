@@ -34,6 +34,7 @@ const DetailsComponent = () => {
 
   useEffect(() => {
     console.log(data);
+    console.log("ggg");
   }, [data]);
 
   return (
