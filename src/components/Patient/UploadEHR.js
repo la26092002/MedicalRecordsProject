@@ -17,14 +17,19 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 
 import { useAppContext } from "../../AppContext";
+import { CircularProgress } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const UploadEHR = () => {
   const [isData, setIsData] = useState(false);
   const [EHR, setEHR] = useState([]);
 
+  const [circularProgress, setCircularProgress] = React.useState(false);
+
   const { account, contract, provider } = useAppContext();
   useEffect(() => {
     const loadContract = async () => {
+      setCircularProgress(true);
       if (!contract) {
         console.error("Contract is not initialized");
         return;
@@ -46,6 +51,7 @@ const UploadEHR = () => {
 
         setEHR(records);
       }
+      setCircularProgress(false);
     };
 
     loadContract();
@@ -58,34 +64,45 @@ const UploadEHR = () => {
   return (
     <>
       <h2>Uploaded EHR Data</h2>
-      <Grid container spacing={2}>
-        <TableContainer>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>hospitaAccount</TableCell>
-                <TableCell>medicalHistory</TableCell>
-                <TableCell>CurrentMedications</TableCell>
-                <TableCell>ReasonVisit</TableCell>
-                <TableCell>doctor</TableCell>
-                <TableCell>Details</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {EHR.map((record, index) => (
-                <TableRow key={index}>
-                  <TableCell>{record[0].hospitaAccount}</TableCell>
-                  <TableCell>{record[0].medicalHistory}</TableCell>
-                  <TableCell>{record[0].CurrentMedications}</TableCell>
-                  <TableCell>{record[0].ReasonVisit}</TableCell>
-                  <TableCell>{record[0].doctor}</TableCell>
-                  <TableCell>Details</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
+      {circularProgress && (
+        <center>
+          <CircularProgress />
+        </center>
+      )}
+      {(!circularProgress || EHR.length > 0) && (
+        <>
+          <Grid container spacing={2}>
+            <TableContainer>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>hospitaAccount</TableCell>
+                    <TableCell>medicalHistory</TableCell>
+                    <TableCell>CurrentMedications</TableCell>
+                    <TableCell>ReasonVisit</TableCell>
+                    <TableCell>doctor</TableCell>
+                    <TableCell>Details</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {EHR.map((record, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{record[0].hospitaAccount}</TableCell>
+                      <TableCell>{record[0].medicalHistory}</TableCell>
+                      <TableCell>{record[0].CurrentMedications}</TableCell>
+                      <TableCell>{record[0].ReasonVisit}</TableCell>
+                      <TableCell>{record[0].doctor}</TableCell>
+                      <TableCell>
+                      <Link to={`/DetailsComponent/${record[0].id}/${account}`}>Details</Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </>
+      )}
     </>
   );
 };
