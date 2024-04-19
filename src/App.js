@@ -16,6 +16,8 @@ import { AddHospital } from "./components/Admin/AddHospital";
 import { AddDoctor } from "./components/Hospital/AddDoctor";
 import CreateEhr from "./components/EHR/CreateEhr";
 import UploadEHR from "./components/Patient/UploadEHR";
+import AccessEhr from "./components/Doctor/AccessEhr";
+import DetailsComponent from "./components/EHR/DetailsComponent";
 
 
 export const App = () => {
@@ -70,6 +72,14 @@ export const appRouter = createBrowserRouter([
       {
         path: "UploadEHR",
         element: <UploadEHR />,
+      },
+      {
+        path: "AccessEhr",
+        element: <AccessEhr />,
+      },
+      {
+        path: "DetailsComponent/:id/:addresse",
+        element: <DetailsComponent />,
       },
       {
         path: "user",

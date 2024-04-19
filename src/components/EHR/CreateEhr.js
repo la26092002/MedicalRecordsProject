@@ -119,10 +119,10 @@ const CreateEhr = () => {
                 alert("Please fill out all fields.");
                 return;
               }
-
+              let length = await contract.displayMedicalRecordsLength(patientAddress);
               let data = {
-                id:"1",
-                doctor:"",
+                id:parseInt(length._hex, 16) ,
+                doctor:account,
                 hospitaAccount:"",
                 medicalHistory,
                 CurrentMedications,
@@ -131,9 +131,10 @@ const CreateEhr = () => {
                 AssessmentPlan,
                 labResult,
               };
-              console.log(JSON.stringify(data) + ",");
+              console.log("["+JSON.stringify(data) + "]");
               contract.createEhr(
-                JSON.stringify(data) 
+                patientAddress,
+                "["+JSON.stringify(data) + "]"
               );
             }}
             variant="outlined"
