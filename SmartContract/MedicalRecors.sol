@@ -22,6 +22,28 @@ contract MedicalRecors {
         string data;
     }
 
+    function isDoctor() external view returns (bool) {
+        bool access = false;
+        for (uint256 i = 0; i < DoctorsAddress.length; i++) {
+            if (DoctorsAddress[i] == msg.sender) {
+                access = true;
+            }
+        }
+
+        return access;
+    }
+
+    function isHospital() external view returns (bool) {
+        bool access = false;
+        for (uint256 i = 0; i < HospitalAccount.length; i++) {
+            if (HospitalAccount[i] == msg.sender) {
+                access = true;
+            }
+        }
+
+        return access;
+    }
+
     function addHospitalAccount(address _user) external {
         require(admin == msg.sender, "You don't have access");
         uint256 j = HospitalAccount.length;
@@ -92,10 +114,7 @@ contract MedicalRecors {
 
     //
 
-    function createEhr(
-        address _patient,
-        string memory _data
-    ) external {
+    function createEhr(address _patient, string memory _data) external {
         //AccesDoctor[patient]=[doctor]
         bool acce = false;
         for (uint256 i = 0; i < AccesDoctor[_patient].length; i++) {
@@ -170,7 +189,7 @@ contract MedicalRecors {
         view
         returns (string memory)
     {
-        require(_id < Ehr[_patient].length, "Index out of bounds");//???
+        require(_id < Ehr[_patient].length, "Index out of bounds"); //???
         return Ehr[_patient][_id];
     }
 
@@ -191,7 +210,11 @@ contract MedicalRecors {
         return AccesDoctor[msg.sender].length;
     }
 
-    function displayaccessDoctorLengthPatient(address _patient) external view returns (uint256) {
+    function displayaccessDoctorLengthPatient(address _patient)
+        external
+        view
+        returns (uint256)
+    {
         return AccesDoctor[_patient].length;
     }
 
