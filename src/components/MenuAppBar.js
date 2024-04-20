@@ -10,14 +10,16 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import TemporaryDrawer from './TemporaryDrawer';
+import { useAppContext } from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [sidebar, setSidebar] = React.useState(false);
   
-
-
+  const { account, contract, provider } = useAppContext();
+  const navigate = useNavigate();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -75,8 +77,11 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>{account}</MenuItem>
+                <MenuItem onClick={() => {
+    handleClose();
+    navigate("patientInfo");
+  }}>My account</MenuItem>
               </Menu>
             </div>
           
