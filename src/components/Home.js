@@ -1,66 +1,39 @@
 import React from "react";
-import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
-
+import Box from "@mui/material/Box";
+//import Image from "./home.webp"; // Assuming home.webp is in the same directory
+import "./style.css";
 export default function Home() {
-  const theme = useTheme();
   return (
-    <Box
-      sx={{
-        mt: 10,
-        ml: 30,
-        textAlign: "center",
-        [theme.breakpoints.down("md")]: {
-          ml: 22,
-        },
-        [theme.breakpoints.down("sm")]: {
-          ml: 18,
-        },
-      }}
-    >
-      <Typography
-        variant="h4"
-        sx={{
-          [theme.breakpoints.down("md")]: {
-            fontSize: 26,
-          },
-          [theme.breakpoints.down("sm")]: {
-            fontSize: 22,
-          },
-        }}
-        gutterBottom
-      >
-        Welcome to the
-      </Typography>
-      <Typography
-        variant="h4"
-        sx={{
-          [theme.breakpoints.down("md")]: {
-            fontSize: 26,
-          },
-          [theme.breakpoints.down("sm")]: {
-            fontSize: 22,
-          },
-        }}
-        gutterBottom
-      >
-        User Dashboard Panel
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{
-          [theme.breakpoints.down("md")]: {
-            fontSize: 22,
-          },
-          [theme.breakpoints.down("sm")]: {
-            fontSize: 18,
-          },
-        }}
-        gutterBottom
-      >
-        Have a Good Day!
-      </Typography>
-    </Box>
+    <>
+      <Grid container spacing={2} mt={5}>
+        <Grid item xs={12} md={6}>
+          <Box mt={3}>
+            <Typography variant="h2">
+              Welcome to <span style={{ color: "brown" }}>MED Platform,</span>
+            </Typography>
+            <Typography variant="h4">
+              where your medical records are securely stored and easily
+              accessible.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Box mt={3}>
+            <center>
+              <img
+                src="./file.jpg"
+                alt="Home"
+                style={{ width: "60%", borderRadius: "10%" }}
+              />
+            </center>
+          </Box>
+        </Grid>
+      </Grid>
+      <center style={{marginTop:"100px"}}>
+        <p>© 2024 MED Platform. All rights reserved.</p>
+      </center>
+    </>
   );
 }

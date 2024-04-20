@@ -7,32 +7,45 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import AddBusinessIcon from "@mui/icons-material/AddBusiness";
-import CategoryIcon from "@mui/icons-material/Category";
-import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import StoreIcon from '@mui/icons-material/Store';
 
-import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
-import BusinessIcon from '@mui/icons-material/Business';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import BusinessIcon from "@mui/icons-material/Business";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 
-import HomeIcon from '@mui/icons-material/Home';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import FolderIcon from '@mui/icons-material/Folder';
-import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
+import HomeIcon from "@mui/icons-material/Home";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import FolderIcon from "@mui/icons-material/Folder";
+import DriveFolderUploadRoundedIcon from "@mui/icons-material/DriveFolderUploadRounded";
 
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useAppContext } from "../AppContext";
 
 export default function TemporaryDrawer({ status, setStatus }) {
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
 
+  const [isDoctor, setIsDoctor] = React.useState(false);
+  const [isHospital, seIsHospital] = React.useState(false);
+  const [isAdmin, seIsAdmin] = React.useState(false);
+
+  const { account, contract, provider } = useAppContext();
+
   useEffect(() => {
     setOpen(status);
+
+    if (contract) {
+    let load = async () => {
+      let IsDoctor = await contract.isDoctor();
+      setIsDoctor(IsDoctor);
+      let IsHospital = await contract.isHospital();
+      seIsHospital(IsHospital);
+      let isAdmin = await contract.isAdmin();
+      seIsAdmin(isAdmin);
+    };
+    load();
+  }
   }, [status]);
 
   const toggleDrawer = (newOpen) => () => {
@@ -82,8 +95,6 @@ export default function TemporaryDrawer({ status, setStatus }) {
         return null;
     }
   };
-  
-
 
   const clickComponent = (index) => {
     switch (index) {
@@ -137,51 +148,87 @@ export default function TemporaryDrawer({ status, setStatus }) {
         break;
     }
   };
-  
-
-  
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {["Home", "Create EHR", "Access EHR"].map(
-          (text, index) => (
-            <ListItem key={text} onClick={() => clickComponent(index)} disablePadding>
-              <ListItemButton >
-                <ListItemIcon>{getIconComponent(index)}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
-      </List>
+      {(isDoctor || isHospital) && (
+        <>
+          <List>
+            {["Home", "Create EHR", "Access EHR"].map((text, index) => (
+              <ListItem
+                key={text}
+                onClick={() => clickComponent(index)}
+                disablePadding
+              >
+                <ListItemButton>
+                  <ListItemIcon>{getIconComponent(index)}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+
+      {(!isDoctor || !isHospital) && (
+        <>
+          <List>
+            {["Home"].map((text, index) => (
+              <ListItem
+                key={text}
+                onClick={() => clickComponent(index)}
+                disablePadding
+              >
+                <ListItemButton>
+                  <ListItemIcon>{getIconComponent(index)}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+
       <Divider />
+      {isAdmin && (
+        <>
+          <List>
+            {["Add Doctors", "Add Hospitals"].map((text, index) => (
+              <ListItem
+                key={text}
+                onClick={() => clickComponent3(index)}
+                disablePadding
+              >
+                <ListItemButton>
+                  <ListItemIcon>{getIconComponent3(index)}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+        </>
+      )}
+
       <List>
-        {[ "Add Doctors","Add Hospitals"].map((text, index) => (
-          <ListItem key={text} onClick={() => clickComponent3(index)} disablePadding>
+        {[
+          "Personel Informations",
+          "Doctors Access",
+          "Hospitals Access",
+          "Upload EHR",
+        ].map((text, index) => (
+          <ListItem
+            key={text}
+            onClick={() => clickComponent2(index)}
+            disablePadding
+          >
             <ListItemButton>
-              <ListItemIcon>
-              {getIconComponent3(index)}
-              </ListItemIcon>
+              <ListItemIcon>{getIconComponent2(index)}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
-        {["Personel Informations", "Doctors Access", "Hospitals Access", "Upload EHR"].map((text, index) => (
-          <ListItem key={text} onClick={() => clickComponent2(index)} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-              {getIconComponent2(index)}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      
     </Box>
   );
 
