@@ -26,6 +26,8 @@ const UploadEHR = () => {
 
   const [circularProgress, setCircularProgress] = React.useState(false);
 
+  
+
   const { account, contract, provider } = useAppContext();
   useEffect(() => {
     const loadContract = async () => {
@@ -51,6 +53,9 @@ const UploadEHR = () => {
 
         setEHR(records);
       }
+
+
+      
       setCircularProgress(false);
     };
 

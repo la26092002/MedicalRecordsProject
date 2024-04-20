@@ -20,6 +20,9 @@ const DetailsComponent = () => {
   let { id, addresse } = useParams();
   const [data, setdata] = useState([]);
 
+  const [isDoctor, setIsDoctor] = React.useState(false);
+  const [isHospital, seIsHospital] = React.useState(false);
+
   const { account, contract, provider } = useAppContext();
   useEffect(() => {
     const loadContract = async () => {
@@ -31,6 +34,12 @@ const DetailsComponent = () => {
       //console.log(record)
       setdata(JSON.parse(record) || []);
       //console.log(JSON.parse(record))
+
+      //is doctar is hospital
+      let IsDoctor = await contract.isDoctor();
+      setIsDoctor(IsDoctor);
+      let IsHospital = await contract.isHospital();
+      seIsHospital(IsHospital);
     };
     loadContract();
   }, [contract, id, addresse]);
@@ -56,18 +65,22 @@ const DetailsComponent = () => {
         Details of Record with ID: {id} of {addresse}
       </h2>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={12} mt={3}>
-          <Button
-            onClick={() => {
-              setAddstate(!addstate);
-            }}
-            variant="outlined"
-            style={{ height: "100%" }}
-            fullWidth
-          >
-            Add New Informations
-          </Button>
-        </Grid>
+        {(isDoctor || isHospital) && (
+          <>
+            <Grid item xs={12} md={12} mt={3}>
+              <Button
+                onClick={() => {
+                  setAddstate(!addstate);
+                }}
+                variant="outlined"
+                style={{ height: "100%" }}
+                fullWidth
+              >
+                Add New Informations
+              </Button>
+            </Grid>
+          </>
+        )}
 
         {addstate && (
           <>
