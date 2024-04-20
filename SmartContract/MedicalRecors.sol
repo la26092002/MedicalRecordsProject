@@ -44,6 +44,14 @@ contract MedicalRecors {
         return access;
     }
 
+    function isAdmin() external view returns (bool) {
+        bool access = false;
+        if (admin == msg.sender) {
+            access = true;
+        }
+        return access;
+    }
+
     function addHospitalAccount(address _user) external {
         require(admin == msg.sender, "You don't have access");
         uint256 j = HospitalAccount.length;
